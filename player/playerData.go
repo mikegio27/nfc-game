@@ -13,15 +13,15 @@ type PlayerHeader struct {
 	Flags []string
 }
 
-// Example name index map
-var nameTable = map[uint8]string{
+// PlayerNames maps player name indices to their string representations
+var PlayerNames = map[uint8]string{
 	0x00: "Sparrow",
 	0x01: "Talon",
 	0x02: "Vex",
 }
 
-// Example status flags
-var flagBits = map[uint8]string{
+// StatusFlags maps bit positions to their corresponding status effect names
+var StatusFlags = map[uint8]string{
 	0: "Dead",
 	1: "Poisoned",
 	2: "Burning",
@@ -49,11 +49,11 @@ func DecodePlayerHeader(data []byte) (*PlayerHeader, error) {
 	var flags []string
 	for i := uint8(0); i < 8; i++ {
 		if (flagByte>>i)&1 == 1 {
-			flags = append(flags, flagBits[i])
+			flags = append(flags, StatusFlags[i])
 		}
 	}
 
-	name, ok := nameTable[nameIndex]
+	name, ok := PlayerNames[nameIndex]
 	if !ok {
 		name = fmt.Sprintf("Unknown (index %d)", nameIndex)
 	}
